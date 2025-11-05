@@ -9,6 +9,10 @@
 		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
 	</files>
 
+	<target id="haxe" tool="linker" if="ios">
+		<lib name="${haxelib:hxCodec}/ndll/iOS/libvlc.a" if="HXCPP_ARM64" />
+	</target>
+
 	<target id="haxe" tool="linker" if="android">
 		<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-v7.so" if="HXCPP_ARMV7" />
 		<lib name="${haxelib:hxCodec}/ndll/Android/libvlc-64.so" if="HXCPP_ARM64" />
