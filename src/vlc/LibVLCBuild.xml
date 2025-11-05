@@ -18,7 +18,7 @@
         <vflag name="-framework" value="Security" />
         <vflag name="-framework" value="VideoToolbox" />
         <vflag name="-framework" value="CoreImage" />
-        <lib name="${haxelib:hxCodec}/ndll/iOS/libvlc.a" />
+        <lib name="${haxelib:hxCodec}/ndll/iOS/libvlc.a" if="HXCPP_ARM64" />
     </section>
 
 	<target id="haxe" tool="linker" if="android">
