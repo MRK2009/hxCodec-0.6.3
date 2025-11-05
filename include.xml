@@ -9,7 +9,23 @@
 
 	<source path="src" />
 
-	<ndll name="c++_shared" if="android" />
-	<ndll name="vlc" if="android || iphoneos" />
+    <section if="android">
+	    <ndll name="c++_shared" />
+	    <ndll name="vlc" />
+	</section>
+
+	<section if="ios">
+        <dependency name="CFNetwork.framework" />
+        <dependency name="CoreFoundation.framework" />
+        <dependency name="CoreMedia.framework" />
+        <dependency name="CoreText.framework" />
+       	<dependency name="CoreVideo.framework" />
+        <dependency name="Security.framework" />
+        <dependency name="VideoToolbox.framework" />
+        <dependency name="CoreImage.framework" />
+
+        <dependency name="libbz2.tbd" />
+        <dependency name="libiconv.tbd" />
+    </section>
 
 </extension>

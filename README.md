@@ -23,7 +23,7 @@ haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 
 2. Add this code in `Project.xml`
 ```xml
-<haxelib name="hxCodec" if="desktop || android" />
+<haxelib name="hxCodec" if="desktop || mobile" />
 ```
 
 **OPTIONAL: If you want debug traces in your console, add this code:**
@@ -187,4 +187,5 @@ You will also have to put the location manually in the paths and to copy that vi
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
 - [Erizur](https://github.com/Erizur) - Linux support.
 - [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
+- [FutureDorito](https://github.com/Futuredorito) | iOS support
 - The contributors.
