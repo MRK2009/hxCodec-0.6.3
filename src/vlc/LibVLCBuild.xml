@@ -9,7 +9,7 @@
 		<compilervalue name="-I" value="${haxelib:hxCodec}/lib/vlc/include/" />
 	</files>
 
-	<target id="haxe" tool="linker" if="ios">
+	<target id="haxe" tool="linker" if="iphoneos || iphonesim">
         <vflag name="-framework" value="CFNetwork" />
         <vflag name="-framework" value="CoreFoundation" />
         <vflag name="-framework" value="CoreMedia" />
