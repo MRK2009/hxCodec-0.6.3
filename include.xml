@@ -9,8 +9,10 @@
 
 	<source path="src" />
 
-    <ndll name="c++_shared" if="android" />
-	<ndll name="vlc" if="android || iphoneos || iphonesim" />
+	<section if="android">
+        <ndll name="c++_shared" />
+	    <ndll name="vlc" />
+	</section>
 
 	<section if="ios">
         <dependency name="CFNetwork.framework" />
