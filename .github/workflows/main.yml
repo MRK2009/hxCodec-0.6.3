@@ -1,0 +1,72 @@
+name: Testing
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  Job:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15, ubuntu-22.04]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          submodules: true
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.1
+
+      - name: Installing Dependencies
+        if: matrix.os == 'ubuntu-22.04'
+        run: sudo apt-get install libvlc-dev libvlccore-dev
+
+      - name: Installing Haxe Libraries
+        run: |
+          haxelib install lime 8.0.2 --quiet
+          haxelib install openfl 9.2.2 --quiet
+          haxelib install flixel 5.3.1 --quiet
+          haxelib dev hxCodec .
+
+      - name: Setup Git hxcpp
+        run: haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git --quiet && haxelib run lime rebuild hxcpp
+
+      - name: Building Windows
+        if: matrix.os == 'windows-latest'
+        run: cd sample && haxelib run lime build windows -debug
+
+      - name: Building Mac
+        if: matrix.os == 'macos-15'
+        run: cd sample && haxelib run lime build mac -debug
+
+      - name: Building Linux
+        if: matrix.os == 'ubuntu-22.04'
+        run: cd sample && haxelib run lime build linux -debug
+
+      - name: Upload Artifact Windows
+        if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@main
+        with:
+          name: windowsBuild
+          path: sample/export/windows/bin
+          if-no-files-found: warn
+
+      - name: Upload Artifact MacOS
+        if: matrix.os == 'macos-15'
+        uses: actions/upload-artifact@main
+        with:
+          name: macBuild
+          path: sample/export/macos/bin
+          if-no-files-found: warn
+
+      - name: Upload Artifact Linux
+        if: matrix.os == 'ubuntu-22.04'
+        uses: actions/upload-artifact@main
+        with:
+          name: linuxBuild
+          path: sample/export/linux/bin
+          if-no-files-found: warn

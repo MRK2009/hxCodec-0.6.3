@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-model href="include.xsd"?>
 <extension>
 
-	<!--<assets path="NOTICE-LINUX.md" rename='NOTICE.txt' if="linux" />-->
+ <section if="windows || mac">
+	<library name="vlc" preload="false" />
 
-	<assets path="include/Mac" rename="../MacOS" if="mac" />
-	<assets path="include/Windows" rename='' if="windows" />
+	<assets path="project/vlc/dll/Mac" rename="../MacOS" if="mac" library="vlc" />
+	<assets path="project/vlc/dll/Windows" rename="" if="windows" library="vlc" />
+</section>
+
+	<section if="ios">
+        	<!--dependency name="MobileVLCKit.framework" path="project/vlc/frameworks" -->
+
+        	<dependency name="AVFoundation.framework" />
+        	<dependency name="CFNetwork.framework" />
+        	<dependency name="CoreFoundation.framework" />
+        	<dependency name="CoreGraphics.framework" />
+        	<dependency name="CoreMedia.framework" />
+        	<dependency name="QuartzCore.framework" />
+        	<dependency name="Security.framework" />
+        	<dependency name="VideoToolbox.framework" />
+
+        	<dependency name="libbz2.tbd" />
+        	<dependency name="libc++.tbd" />
+        	<dependency name="libiconv.tbd" />
+        	<dependency name="libxml2.tbd" />
+	</section>
+
+	<section if="android">
+		<ndll name="c++_shared" dir="project/vlc/lib" />
+		<ndll name="vlc" dir="project/vlc/lib" />
+	</section>
 
 	<source path="src" />
-
-	<ndll name="c++_shared" if="android" />
-	<ndll name="vlc" if="android || iphoneos" />
 
 </extension>

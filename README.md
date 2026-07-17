@@ -1,133 +1,50 @@
 # hxCodec
-A library which adds native video support for OpenFL and HaxeFlixel.
+
+![](https://img.shields.io/github/repo-size/polybiusproxy/hxCodec) ![](https://badgen.net/github/open-issues/polybiusproxy/hxCodec) ![](https://badgen.net/badge/license/MPL2.0/green)
+
+A library which adds native video support on HaxeFlixel.
+
+--------------------------
 
 Using [libVLC](https://www.videolan.org/vlc/libvlc.html), hxCodec allows to play hundreds of video codecs.
-
-**[Original repository](https://github.com/polybiusproxy/PolyEngine)**          
+          
 **[Click here to check the roadmap](https://github.com/polybiusproxy/hxCodec/projects/1)**
 
 --------------------------
 
-## Instructions for Friday Night Funkin'
+## Instructions
 
-1. Install the Haxelib
-You can install it through haxelib:
+### 1. Install the library
+Install the latest stable version of `hxCodec` by running the following Haxelib command:
 ```
 haxelib install hxCodec
 ```
 
-You can also install it through Git for the latest updates:
+You can also install it through Git to get the latest changes:
 ```
 haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
 ```
 
-2. Add this code in `Project.xml`
+### 2. Modify Project.xml
+Add this code in the Project.xml file:
 ```xml
 <haxelib name="hxCodec" if="desktop || android" />
 ```
 
-**OPTIONAL: If you want debug traces in your console, add this code:**
+**OPTIONAL: If you want debug traces in your console when compiling in debug mode, add this:**
 ```xml
 <!-- Show debug traces for hxCodec -->
 <haxedef name="HXC_DEBUG_TRACE" if="debug" />
 ```
 
-3. Create a folder called `videos` in your `assets/preload` folder.
-
-4. Add this code in `Paths.hx`:
-```haxe
-inline static public function video(key:String)
-{
-	return 'assets/videos/$key';
-}
-```
-
 --------------------------
 
-### Playing videos
+## Playing videos
 
-1. Put your video in the videos folder.
-
-**Note: hxCodec supports all the video formats VLC can play!**
-
-2. Add somewhere in PlayState:
-```haxe
-function playCutscene(name:String, atEndOfSong:Bool = false)
-{
-	inCutscene = true;
-	FlxG.sound.music.stop();
-
-	var video:VideoHandler = new VideoHandler();
-	video.finishCallback = function()
-	{
-		if (atEndOfSong)
-		{
-			if (storyPlaylist.length <= 0)
-				FlxG.switchState(new StoryMenuState());
-			else
-			{
-				SONG = Song.loadFromJson(storyPlaylist[0].toLowerCase());
-				FlxG.switchState(new PlayState());
-			}
-		}
-		else
-			startCountdown();
-	}
-	video.playVideo(Paths.video(name));
-}
-```
-
---------------------------
-
-#### Examples
-
-At the PlayState "create()" function:
-```haxe
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.asf');
-	case 'song2':
-		playCutscene('song2scene.avi');
-	default:
-		startCountdown();
-}
-```
-
-At the PlayState "endSong()" function:
-```haxe
-if (SONG.song.toLowerCase() == 'song1')
-	playCutscene('song1scene.mjpeg', true);
-```
-
-#### Examples for Kade Engine 1.8
-
-At the PlayState "create()" function:
-```haxe
-generateSong(SONG.songId);
-
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.mp4');
-	default:
-		startCountdown();
-}
-
-```
-
-At the PlayState "endSong()" function:
-```haxe
-PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0], diff);
-FlxG.sound.music.stop();
-
-switch (curSong.toLowerCase())
-{
-	case 'song1':
-		playCutscene('song1scene.ogg', true);
-	case 'song2':
-		playCutscene('song2scene.wav', true);
-}
+You can play videos in just 2 lines of code:
+```hx
+var video:hxcodec.flixel.VideoHandler = new hxcodec.flixel.VideoHandler();
+video.playVideo('assets/video.mp4');
 ```
 
 --------------------------
@@ -137,24 +54,21 @@ switch (curSong.toLowerCase())
 ### Windows and MacOS
 
 You don't need any special instructions in order to build for Windows or MacOS.
-Just pull the `lime build windows` / `lime build mac` command and the library will be building with your game.
+Just run the `lime build windows` / `lime build mac` command and the library will be building with your game.
 
 ### Linux
 
-In order to make your game work with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
+In order to build a application with the library, you **have to install** `libvlc-dev` and `libvlccore-dev` from your distro's package manager.
 
 Example with APT:
-```
-sudo apt-get install libvlc-dev
-sudo apt-get install libvlccore-dev
-sudo apt-get install vlc-bin
+```bash
+sudo apt-get install libvlc-dev libvlccore-dev 
 ```
 
 ### Android
 
-**Currently, hxCodec can load videos only from internal / external storage (not on the application storage).**
-
-In order this method for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
+**Currently, hxCodec can load videos only from internal / external storage (not from the application storage).**
+In order for hxCodec to work on Android, you will need a library called [extension-androidtools](https://github.com/jigsaw-4277821/extension-androidtools).
 
 To install it, enter the following in a terminal:
 ```
@@ -166,25 +80,29 @@ Next, add this into `Project.xml`
 <haxelib name="extension-androidtools" if="android" />
 ```
 
-You can can choose whether you want to use after you inport this in your code.
+You can choose whether you want to use after you import this in your code.
 
 ```haxe
 import android.content.Context;
 ```
 
-* From internal storage, `Context.getFilesDir()` or `Context.getCacheDir()`
-
-* From external storage, `Context.getExternalFilesDir()` or `Context.getExternalCacheDir()`.
+* From internal storage: `Context.getFilesDir()` or `Context.getCacheDir()`<br />
+* From external storage: `Context.getExternalFilesDir()` or `Context.getExternalCacheDir()`.
 
 You will also have to put the location manually in the paths and to copy that video to the respective path.
 
---------------------------
+## Licensing
+
+**hxCodec** is made available under the **Mozilla Public License 2.0**. Check [LICENSE](./LICENSE) for more information.
+
+![](https://github.com/videolan/vlc/blob/master/share/icons/256x256/vlc.png)
+
+**libVLC** is the engine of **VLC** released under the **LGPLv2 License** (or later). Check [VideoLAN.org](https://www.videolan.org/legal.html) for more information.
 
 ## Credits
 
 - [PolybiusProxy](https://github.com/polybiusproxy) - Creator of hxCodec.
-- [Jigsaw](https://github.com/MAJigsaw77) - Programmer and Android support.
 - [datee](https://github.com/datee) - Creator of HaxeVLC.
-- [Erizur](https://github.com/Erizur) - Linux support.
-- [BushTrain460615](https://github.com/BushTrain460615) - macOS Support.
+- [Jigsaw](https://github.com/MAJigsaw77) - Programmer, Android & Linux support.
+- [BushTrain](https://github.com/BushTrain460615) - macOS support.
 - The contributors.
