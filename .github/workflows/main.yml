@@ -33,7 +33,7 @@ jobs:
           haxelib dev hxCodec .
 
       - name: Setup Git hxcpp
-        run: haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git --quiet && haxelib run lime rebuild hxcpp
+        run: haxelib git hxcpp https://github.com/NeeEoo/hxcpp.git progress --quiet && haxelib run lime rebuild hxcpp
 
       - name: Building Windows
         if: matrix.os == 'windows-latest'
